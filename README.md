@@ -30,4 +30,4 @@ It scrambles a virtual cube, displays its state, and then solves it step-by-step
 
 ## 🌐 Hosted Link
 
-[Click to open the project](https://sushmamogili.github.io/Rubik-cube/) <!-- Replace with actual link -->
+[Click to open the project](https://sushmamogili.github.io/Rubik-cube) 
