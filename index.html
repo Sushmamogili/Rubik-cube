@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rubik's Cube Solver</title>
+</head>
+<body>
+  <h1>Open the browser console to see the output</h1>
+  <script>
+    // Rubik's Cube Solver - Basic JavaScript Implementation
+
+// Face colors: r = red, g = green, b = blue, y = yellow, o = orange, w = white
+const COLORS = ['r', 'g', 'b', 'y', 'o', 'w'];
+
+class Face {
+  constructor(color) {
+    this.tiles = Array(9).fill(color);
+  }
+
+  rotateClockwise() {
+    const t = this.tiles;
+    this.tiles = [
+      t[6], t[3], t[0],
+      t[7], t[4], t[1],
+      t[8], t[5], t[2]
+    ];
+  }
+
+  rotateCounterClockwise() {
+    const t = this.tiles;
+    this.tiles = [
+      t[2], t[5], t[8],
+      t[1], t[4], t[7],
+      t[0], t[3], t[6]
+    ];
+  }
+}
+
+class Cube {
+  constructor() {
+    this.faces = {
+      U: new Face('w'),
+      D: new Face('y'),
+      F: new Face('g'),
+      B: new Face('b'),
+      L: new Face('o'),
+      R: new Face('r')
+    };
+    this.history = [];
+  }
+
+  // Just one sample rotation for simplicity
+  rotateFace(face, clockwise = true) {
+    this.history.push(`${face}${clockwise ? '' : "'"}`);
+    if (clockwise) this.faces[face].rotateClockwise();
+    else this.faces[face].rotateCounterClockwise();
+    // Simplified: Full adjacent tile rotations are not handled here
+  }
+
+  scramble() {
+    const moves = ['U', 'D', 'F', 'B', 'L', 'R'];
+    for (let i = 0; i < 20; i++) {
+      const move = moves[Math.floor(Math.random() * moves.length)];
+      const clockwise = Math.random() > 0.5;
+      this.rotateFace(move, clockwise);
+    }
+  }
+
+  solve() {
+    // Placeholder solving method - just reversing scramble history
+    for (let i = this.history.length - 1; i >= 0; i--) {
+      const move = this.history[i];
+      const face = move[0];
+      const clockwise = move.length === 1 ? false : true;
+      this.rotateFace(face, clockwise);
+      console.log(`Step: ${move}`);
+      this.display();
+    }
+    this.history = [];
+  }
+
+  display() {
+    const state = Object.values(this.faces).map(f => f.tiles.join('')).join('\n');
+    console.log(state);
+  }
+
+  getSvgData() {
+    return Object.values(this.faces).map(f => f.tiles.join('')).join('');
+  }
+}
+
+// Example usage
+const cube = new Cube();
+cube.scramble();
+console.log("Scrambled Cube:");
+cube.display();
+cube.solve();
+console.log("Solved Cube:");
+cube.display();
+
+  </script>
+</body>
+</html>
